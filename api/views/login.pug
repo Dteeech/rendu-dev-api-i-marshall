@@ -1,0 +1,7 @@
+// login.pug
+extends layout
+
+form(action="/login", method="get")
+  label(for="username") Nom d'utilisateur:
+  input(type="text", name="username")
+  button(type="submit") Se connecter

@@ -7,6 +7,8 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger_output.json");
 var indexRouter = require("./routes/index");
 var courtsRouter = require("./routes/courts");
+var loginRouter = require("./routes/login");
+var bodyParser = require("body-parser");
 
 var app = express();
 
@@ -19,13 +21,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /**
  * Enregistrement des routes
  */
 app.use("/", indexRouter);
-app.use("/", courtsRouter);
-
+app.use("/courts", courtsRouter);
+app.use("/login", loginRouter);
 /**
  * Configuration Swagger, exposition de la doc sur la route /doc
  */

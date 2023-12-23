@@ -3,7 +3,7 @@ var router = express.Router();
 var db = require("../db");
 
 /* GET courts page. */
-router.get("/courts", async function (req, res, next) {
+router.get("/", async function (req, res, next) {
   // #swagger.summary = "Page des terrains de tennis"
 
   const conn = await db.mysql.createConnection(db.dsn);
@@ -14,7 +14,7 @@ router.get("/courts", async function (req, res, next) {
     const courts = rows.map((element) => {
       return {
         name: element.name,
-        status: element.status,
+        status: element.status === 1 ? "disponible" : "non disponible",
         daysAvailable: element.daysAvailable,
       };
     });
