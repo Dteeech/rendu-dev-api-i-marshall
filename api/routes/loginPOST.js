@@ -2,18 +2,12 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db");
 
-// Page d'authentification
-router.get("/", async function (req, res, next) {
-  res.render("login", { message: "Bonjour, monde !" });
-});
-
 // Authentification de l'utilisateur (traitement du formulaire soumis)
 router.post("/", async function (req, res, next) {
   const conn = await db.mysql.createConnection(db.dsn);
 
   const { username } = req.body;
-  console.log("req.body:", req.body);
-  console.log("username:", username);
+  console.log(username);
 
   if (!username) {
     res.render("login", { error: "Veuillez fournir un nom d'utilisateur" });
@@ -22,12 +16,13 @@ router.post("/", async function (req, res, next) {
 
   try {
     const [rows] = await conn.execute(
-      `SELECT first_name FROM User WHERE first_name = ?`,
+      `SELECT first_name FROM User WHERE username = ?`,
       [username]
     );
     console.log("Rows:", rows);
 
-    if (rows.length > 0 || rows.data) {
+    if (rows.length > 0) {
+      req.session.username = username;
       res.redirect("/");
       // Redirige l'utilisateur vers la page d'accueil après la connexion
       console.log("vous êtes connecté");

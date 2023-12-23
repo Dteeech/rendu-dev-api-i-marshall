@@ -9,6 +9,7 @@ var indexRouter = require("./routes/index");
 var courtsRouter = require("./routes/courts");
 var loginRouter = require("./routes/login");
 var bodyParser = require("body-parser");
+const session = require("express-session");
 
 var app = express();
 
@@ -21,14 +22,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use(bodyParser.urlencoded({ extended: true }));
 
 /**
  * Enregistrement des routes
  */
 app.use("/", indexRouter);
 app.use("/courts", courtsRouter);
-app.use("/login", loginRouter);
+app.use("/login", loginRouter); // Gestion de la route GET
 /**
  * Configuration Swagger, exposition de la doc sur la route /doc
  */
