@@ -8,8 +8,10 @@ const swaggerFile = require("./swagger_output.json");
 var indexRouter = require("./routes/index");
 var courtsRouter = require("./routes/courts");
 var loginRouter = require("./routes/login");
-var bodyParser = require("body-parser");
+var reservationRouter = require("./routes/reservation");
+
 const session = require("express-session");
+const crypto = require("crypto");
 
 var app = express();
 
@@ -24,11 +26,27 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 /**
+ * configuration de la session
+ * génère une secret key
+ *
+ */
+const secretKey = crypto.randomBytes(32).toString("hex");
+app.use(
+  session({
+    secret: secretKey, //clée secrete de la session
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+/**
  * Enregistrement des routes
  */
 app.use("/", indexRouter);
 app.use("/courts", courtsRouter);
 app.use("/login", loginRouter); // Gestion de la route GET
+app.use("/reservation", reservationRouter);
+
 /**
  * Configuration Swagger, exposition de la doc sur la route /doc
  */

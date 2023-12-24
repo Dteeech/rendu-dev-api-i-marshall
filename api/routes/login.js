@@ -12,6 +12,7 @@ router.post("/", async function (req, res, next) {
   const conn = await db.mysql.createConnection(db.dsn);
 
   const { username } = req.body;
+
   console.log("req.body:", req.body);
   console.log("username:", username);
 
@@ -28,9 +29,13 @@ router.post("/", async function (req, res, next) {
     console.log("Rows:", rows);
 
     if (rows.length > 0 || rows.data) {
-      res.redirect("/");
+      req.session.username = username; // on enregistre le nom dans la session
+
+      res.redirect("/reservation");
       // Redirige l'utilisateur vers la page d'accueil après la connexion
-      console.log("vous êtes connecté");
+      res.render("login", {
+        message: `vous êtes connecté ${username}`,
+      });
     } else {
       res.render("login", { error: "Nom d'utilisateur incorrect" });
     }
