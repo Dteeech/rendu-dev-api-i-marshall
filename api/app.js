@@ -9,6 +9,7 @@ var indexRouter = require("./routes/index");
 var courtsRouter = require("./routes/courts");
 var loginRouter = require("./routes/login");
 var reservationRouter = require("./routes/reservation");
+var createUserRouter = require("./routes/user");
 
 const session = require("express-session");
 const crypto = require("crypto");
@@ -44,8 +45,9 @@ app.use(
  */
 app.use("/", indexRouter);
 app.use("/courts", courtsRouter);
-app.use("/login", loginRouter); // Gestion de la route GET
+app.use("/login", loginRouter);
 app.use("/reservation", reservationRouter);
+app.use("/create-user", createUserRouter);
 
 /**
  * Configuration Swagger, exposition de la doc sur la route /doc

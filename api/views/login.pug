@@ -3,12 +3,10 @@ extends layout
 block content
   p= message
 
-  // Ajoutez le formulaire ici
-  form(action="/login", method="post")
+    form(action="/login", method="post")
     label(for="username") Nom d'utilisateur:
     input(type="text", name="username")
     button(type="submit") Se connecter
 
-  // Afficher un message d'erreur s'il y en a un
   if (error)
     p.error= error

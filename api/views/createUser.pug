@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+  h2 Création de compte de réservation
+  p= message
+
+  form(action="/create-user", method="post")
+    label(for="username") Choisissez un nom d'utilisateur:
+    input(type="text", name="username")
+    button(type="submit") Créer mon compte
+
+  if (error)
+    p.error= error

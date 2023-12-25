@@ -21,6 +21,11 @@ router.post("/", async function (req, res, next) {
     return;
   }
 
+  // Seul un·e administrateur·ice du système peut rendre indisponible un terrain. Cette
+  // ressource doit donc être protégée par authentification. Pour cela, le système doit exposer une
+  // ressource pour authentifier l’ administrateur·ice identifié·e par le pseudo réservé admybad et le
+  // mot de passe admybad.
+
   try {
     const [rows] = await conn.execute(
       `SELECT first_name FROM User WHERE first_name = ?`,
@@ -29,6 +34,13 @@ router.post("/", async function (req, res, next) {
     console.log("Rows:", rows);
 
     if (rows.length > 0 || rows.data) {
+      if (username === "admybad") {
+        username = "admybad";
+        req.session.username = username;
+        // on va réserver la route pour modifier la disponibilité à l'admin via l'uri ->
+        res.redirect("/admin/courts");
+      }
+
       req.session.username = username; // on enregistre le nom dans la session
 
       res.redirect("/reservation");
