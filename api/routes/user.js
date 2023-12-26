@@ -1,12 +1,34 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const { halLinkObject } = require("../hal");
 
 // Page de création de compte (formulaire)
 router.get("/", async function (req, res, next) {
-  console.log("Entrée dans la route /createUser");
-  res.render("createUser", {
+  // utilisation de la fonction halLinkObject pour générer des liens hal
+  const selfLink = halLinkObject("/create-user");
+  const profileLink = halLinkObject("/profile/user");
+  const createLink = halLinkObject(
+    "/create-user",
+    "POST",
+    "créer un nouvel utilisateur",
+    false,
+    "permet de créer un nouvel utilisateur"
+  );
+
+  const halRepresentation = {
+    _links: {
+      self: selfLink,
+      profile: profileLink,
+      create: createLink,
+    },
     message: "Bonjour, veuillez créer votre compte pour pouvoir réserver !",
+  };
+
+  res.render("createUser", {
+    title: "Titre de votre page",
+    _links: halRepresentation._links,
+    message: halRepresentation.message,
   });
 });
 
@@ -40,9 +62,13 @@ router.post("/", async function (req, res, next) {
       [username]
     );
     //renvoyer une res sous forme json hal
-    res.render("createUser", {
+    const successResponse = {
+      _links: {
+        self: selfLink,
+      },
       message: `votre nom ${username} a bien été créé en BDD`,
-    });
+    };
+    res.status(201).json(successResponse);
   } catch (error) {
     console.log("dans le catch");
     console.error("Erreur de création de compte: " + error.stack);

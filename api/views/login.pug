@@ -8,5 +8,12 @@ block content
     input(type="text", name="username")
     button(type="submit") Se connecter
 
+  // Traitement des liens HAL
+  if (_links)
+    if (_links.create && _links.create.href)
+      a(href=_links.create.href, title=_links.create.title, target=_links.create.target)
+      a(href=_links.next.href, title=_links.next.title)
+
   if (error)
     p.error= error
+

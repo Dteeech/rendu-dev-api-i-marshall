@@ -10,5 +10,10 @@ block content
     input(type="text", name="username")
     button(type="submit") Créer mon compte
 
+  // Traitement des liens HAL
+  if (_links)
+    if (_links.create && _links.create.href)
+      a(href=_links.create.href, title=_links.create.title, target=_links.create.target) Créer un nouvel utilisateur
+
   if (error)
     p.error= error

@@ -7,5 +7,6 @@ block content
   p du lundi au samedi de 10h à 22h
   ul
     each court in courts
-      li= `${court.Name} - ${court.Status} - ${court.UnavailableDays}`
-
+      li
+        | #{court.Name} - #{court.Status} - #{court.UnavailableDays} -
+        a(href=court._links.self.href) Voir détails

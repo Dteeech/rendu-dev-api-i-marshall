@@ -1,3 +1,4 @@
+//app.js
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -8,8 +9,8 @@ const swaggerFile = require("./swagger_output.json");
 var indexRouter = require("./routes/index");
 var courtsRouter = require("./routes/courts");
 var loginRouter = require("./routes/login");
-var reservationRouter = require("./routes/reservation");
 var createUserRouter = require("./routes/user");
+var courtRouter = require("./routes/court");
 
 const session = require("express-session");
 const crypto = require("crypto");
@@ -43,11 +44,11 @@ app.use(
 /**
  * Enregistrement des routes
  */
-app.use("/", indexRouter);
-app.use("/courts", courtsRouter);
+app.use("/", courtsRouter);
 app.use("/login", loginRouter);
-app.use("/reservation", reservationRouter);
 app.use("/create-user", createUserRouter);
+app.use("/courts", courtsRouter);
+app.use("/courts/court", courtRouter);
 
 /**
  * Configuration Swagger, exposition de la doc sur la route /doc

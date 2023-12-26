@@ -1,10 +1,36 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const { halLinkObject } = require("../hal");
 
 // Page d'authentification
 router.get("/", async function (req, res, next) {
-  res.render("login", { message: "Bonjour, monde !" });
+  const selfLink = halLinkObject("/login");
+  const nextLink = halLinkObject("/register");
+  const profileLink = halLinkObject("/profile/user");
+  const createLink = halLinkObject(
+    "/create-user",
+    "POST",
+    "créer un nouvel utilisateur",
+    false,
+    "permet de créer un nouvel utilisateur"
+  );
+
+  const halRepresentation = {
+    _links: {
+      self: selfLink,
+      next: nextLink,
+      profile: profileLink,
+      create: createLink,
+    },
+    message: "Bonjour, veuillez créer votre compte pour pouvoir réserver !",
+  };
+
+  res.render("createUser", {
+    title: "Titre de votre page",
+    _links: halRepresentation._links,
+    message: halRepresentation.message,
+  });
 });
 
 // Authentification de l'utilisateur (traitement du formulaire soumis)
@@ -20,11 +46,6 @@ router.post("/", async function (req, res, next) {
     res.render("login", { error: "Veuillez fournir un nom d'utilisateur" });
     return;
   }
-
-  // Seul un·e administrateur·ice du système peut rendre indisponible un terrain. Cette
-  // ressource doit donc être protégée par authentification. Pour cela, le système doit exposer une
-  // ressource pour authentifier l’ administrateur·ice identifié·e par le pseudo réservé admybad et le
-  // mot de passe admybad.
 
   try {
     const [rows] = await conn.execute(

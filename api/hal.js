@@ -6,22 +6,27 @@
 
 /**
  * Retourne un Link Object, conforme à la spécification HAL
- * @param {*} url 
- * @param {*} type 
- * @param {*} name 
- * @param {*} templated 
- * @param {*} deprecation 
- * @returns 
+ * @param {*} url
+ * @param {*} type
+ * @param {*} name
+ * @param {*} templated
+ * @param {*} deprecation
+ * @returns
  */
-function halLinkObject(url, type = '', name = '', templated = false, deprecation = false) {
-
-    return {
-        "href": url,
-        "templated": templated,
-        ...(type && { "type": type }),
-        ...(name && { "name": name }),
-        ...(deprecation && { "deprecation": deprecation })
-    }
+function halLinkObject(
+  url,
+  type = "",
+  name = "",
+  templated = false,
+  deprecation = false
+) {
+  return {
+    href: url,
+    templated: templated,
+    ...(type && { type: type }),
+    ...(name && { name: name }),
+    ...(deprecation && { deprecation: deprecation }),
+  };
 }
 
 /**
@@ -30,16 +35,17 @@ function halLinkObject(url, type = '', name = '', templated = false, deprecation
  * @returns un Ressource Object Concert (spec HAL)
  */
 function mapConcertoResourceObject(concertData, baseURL) {
-    return {
-        "_links": [{
-            // A compléter
-            // "self": halLinkObject(...),
-            // "reservation": halLinkObject(...)
-        }],
+  return {
+    _links: [
+      {
+        // A compléter
+        // "self": halLinkObject(...),
+        // "reservation": halLinkObject(...)
+      },
+    ],
 
-        //Données d'un concert à ajouter ici...
-    }
+    //Données d'un concert à ajouter ici...
+  };
 }
-
 
 module.exports = { halLinkObject, mapConcertoResourceObject };

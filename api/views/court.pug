@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  if court
+    p #{court.Name} - #{court.Status} - #{court.UnavailableDays}
+    p= court.message
+    a(href=court._links.previous.href) Retour à la liste des terrains
+    form(action=court.reserve.href, method="POST")
+      button(type="submit")= court.reserve.title
+  else
+    p Détails du terrain introuvables

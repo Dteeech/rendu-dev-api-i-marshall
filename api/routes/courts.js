@@ -13,7 +13,13 @@ router.get("/", async function (req, res, next) {
     console.log(rows);
 
     const courts = rows.map((element) => {
+      const courtId = element.ID;
+      const courtLink = `/courts/court/${courtId}`;
+
       return {
+        _links: {
+          self: { href: courtLink },
+        },
         Name: element.Name,
         Status: element.Status === 1 ? "disponible" : "non disponible",
         UnavailableDays: element.UnavailableDays,
