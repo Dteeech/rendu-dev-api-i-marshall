@@ -14,11 +14,14 @@ router.get("/", async function (req, res, next) {
 
     const courts = rows.map((element) => {
       const courtId = element.ID;
+      const courtsLink = `/court/courts`;
       const courtLink = `/courts/court/${courtId}`;
 
       return {
         _links: {
-          self: { href: courtLink },
+          self: { href: courtsLink },
+          previous: { href: "/", title: "Accueil" },
+          next: { href: courtLink, title: "Voir le détail du terrain" },
         },
         Name: element.Name,
         Status: element.Status === 1 ? "disponible" : "non disponible",

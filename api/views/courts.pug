@@ -9,4 +9,4 @@ block content
     each court in courts
       li
         | #{court.Name} - #{court.Status} - #{court.UnavailableDays} -
-        a(href=court._links.self.href) Voir détails
+        a(href=court._links.next.href)= court._links.next.title
