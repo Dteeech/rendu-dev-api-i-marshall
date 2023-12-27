@@ -2,11 +2,23 @@ extends layout
 
 block content
   h1= title
-  if court
-    p #{court.Name} - #{court.Status} - #{court.UnavailableDays}
-    p= court.message
-    a(href=court._links.previous.href) Retour à la liste des terrains
-    form(action=court.reserve.href, method="POST")
-      button(type="submit")= court.reserve.title
-  else
-    p Détails du terrain introuvables
+  p horaires de la salle :
+  p du lundi au samedi de 10h à 22h
+
+
+  if message
+    p Connecté en tant que #{message}
+
+  
+  if court.Status === "disponible"
+    p Détails du terrain :
+    ul
+      li= `Nom: ${court.Name}`
+      li= `Statut: ${court.Status}`
+      li= `Indisponibilité: ${court.UnavailableDays}`
+   
+    a(href=court._links.next.href) Réserver
+  else 
+  h2 terrain déjà réservé
+
+

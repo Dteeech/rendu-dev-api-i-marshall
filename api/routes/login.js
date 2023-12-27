@@ -1,33 +1,35 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
-const { halLinkObject } = require("../hal");
 
 // Page d'authentification
 router.get("/", async function (req, res, next) {
-  const selfLink = halLinkObject("/login");
-  const nextLink = halLinkObject("/register");
-  const profileLink = halLinkObject("/profile/user");
-  const createLink = halLinkObject(
-    "/create-user",
-    "POST",
-    "créer un nouvel utilisateur",
-    false,
-    "permet de créer un nouvel utilisateur"
-  );
-
   const halRepresentation = {
     _links: {
-      self: selfLink,
-      next: nextLink,
-      profile: profileLink,
-      create: createLink,
+      self: { href: "/login" },
+      previous: {
+        href: "/register",
+        title: "register",
+        description: "créer un compte",
+      },
+      next: {
+        href: "/courts",
+        title: "courts",
+        description: "liste des terrains",
+      },
+      profile: { href: "/profile/user" },
+      create: {
+        href: "/login",
+        method: "POST",
+        title: "Se connecter",
+        templated: false,
+        description: "Permet de se connecter à son compte",
+      },
     },
     message: "Bonjour, veuillez créer votre compte pour pouvoir réserver !",
   };
 
-  res.render("createUser", {
-    title: "Titre de votre page",
+  res.render("login", {
     _links: halRepresentation._links,
     message: halRepresentation.message,
   });
@@ -49,22 +51,23 @@ router.post("/", async function (req, res, next) {
 
   try {
     const [rows] = await conn.execute(
-      `SELECT first_name FROM User WHERE first_name = ?`,
+      `SELECT * FROM User WHERE first_name = ?`,
       [username]
     );
     console.log("Rows:", rows);
 
-    if (rows.length > 0 || rows.data) {
-      if (username === "admybad") {
-        username = "admybad";
-        req.session.username = username;
-        // on va réserver la route pour modifier la disponibilité à l'admin via l'uri ->
-        res.redirect("/admin/courts");
-      }
+    if (rows.length > 0) {
+      // if (username === "admybad") {
+      //   username = "admybad";
+      //   req.session.username = username;
+      //   // on va réserver la route pour modifier la disponibilité à l'admin via l'uri ->
+      //   res.redirect("/courts");
+      // }
 
-      req.session.username = username; // on enregistre le nom dans la session
-
-      res.redirect("/reservation");
+      const user = rows[0];
+      req.session.username = username;
+      req.session.userId = user.id;
+      res.redirect("/courts");
       // Redirige l'utilisateur vers la page d'accueil après la connexion
       res.render("login", {
         message: `vous êtes connecté ${username}`,

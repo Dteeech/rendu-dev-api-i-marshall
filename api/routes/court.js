@@ -22,13 +22,13 @@ router.get("/:id", async function (req, res, next) {
         _links: {
           self: { href: `/courts/court/${courtId}` },
           previous: { href: `/courts/` },
+          next: { href: `/courts/court/${courtId}/reserve-form` },
         },
         Name: courtDetails.Name,
         Status: courtDetails.Status === 1 ? "disponible" : "non disponible",
         UnavailableDays: courtDetails.UnavailableDays,
-        message: "veuillez être connecté pour réserver",
         reserve: {
-          href: `/courts/court/${courtId}`,
+          href: `/courts/court/${courtId}/reserve`,
           method: "POST",
           title:
             courtDetails.Status === 1 ? "Réserver" : "Annuler la réservation",
@@ -40,6 +40,7 @@ router.get("/:id", async function (req, res, next) {
       res.render("court", {
         title: `Détails du terrain ${courtDetails.Name}`,
         court: halRepresentation,
+        message: req.session.username,
       });
     } else {
       res.render("court", {
@@ -55,36 +56,89 @@ router.get("/:id", async function (req, res, next) {
     conn.end();
   }
 });
-router.post("/:id", async function (req, res, next) {
-  const conn = await db.mysql.createConnection(db.dsn);
+
+router.get("/:id/reserve-form", async function (req, res, next) {
   const courtId = req.params.id;
 
+  console.log("court id dans /:id/reserve-form :", courtId);
+
+  // Vérifiez si l'utilisateur est connecté
+  if (!req.session.username) {
+    res.redirect("/login");
+    return;
+  }
+
+  res.render("reserve-form", {
+    title: `Réserver le terrain ${courtId}`,
+    courtId: courtId,
+    message: req.session.username,
+  });
+});
+
+router.post("/:id/reserve-form", async function (req, res, next) {
+  const courtId = req.params.id;
+  const userId = req.session.userId;
+  const duration = 45;
+
+  const reservationDate = req.body.reservationDate;
+  const reservationTime = req.body.reservationTime;
+  console.log("courtId:", courtId);
+  console.log("userId:", userId);
+  console.log("duration:", duration);
+  console.log("reservationDate:", reservationDate);
+  console.log("reservationTime:", reservationTime);
+
+  if (!courtId || !userId || !reservationDate || !reservationTime) {
+    res.status(400).json({
+      msg: "Paramètres manquants pour la réservation.",
+    });
+    return;
+  }
+
+  const date = reservationDate;
+  const time = reservationTime;
+
+  const conn = await db.mysql.createConnection(db.dsn);
+
   try {
-    const [rows] = await conn.execute(`SELECT Status FROM Court WHERE ID = ?`, [
-      courtId,
-    ]);
+    // Vérifier si la plage horaire spécifique est disponible
+    const [availabilityRows] = await conn.execute(
+      "SELECT * FROM Reservation WHERE Court_ID = ? AND Date = ? AND Time = ?",
+      [courtId, date, time]
+    );
 
-    if (rows.length > 0) {
-      const currentStatus = rows[0].Status;
+    // Vérifier si l'heure de réservation est entre 10h et 22h
+    const reservationDateTime = new Date(`${date} ${time}`);
+    const openingHour = 10;
+    const closingHour = 22;
+    const reservationHour = reservationDateTime.getHours();
 
-      // Inversez l'état du terrain (true devient false, et vice versa)
-      const newStatus = !currentStatus;
+    if (reservationHour < openingHour || reservationHour > closingHour) {
+      res.status(400).json({
+        msg: "Les réservations ne sont autorisées qu'entre 10h et 22h.",
+      });
+      return;
+    }
 
-      // Mettez à jour le statut du terrain dans la base de données
-      await conn.execute(`UPDATE Court SET Status = ? WHERE ID = ?`, [
-        newStatus,
-        courtId,
-      ]);
+    if (availabilityRows.length === 0) {
+      // La plage horaire est disponible, effectuer la réservation
+      await conn.execute(
+        "INSERT INTO Reservation (User_ID, Court_ID, Date, Time, Duration) VALUES (?, ?, ?, ?, ?)",
+        [userId, courtId, date, time, duration]
+      );
+
+      // Mettre à jour le statut du terrain dans la table Court
+      await conn.execute("UPDATE Court SET Status = 0 WHERE ID = ?", [courtId]);
 
       res.redirect(`/courts/court/${courtId}`);
     } else {
-      // Le terrain n'a pas été trouvé
-      res.status(404).json({
-        msg: "Terrain introuvable",
+      // La plage horaire est déjà réservée
+      res.status(400).json({
+        msg: "La plage horaire spécifiée est déjà réservée.",
       });
     }
   } catch (error) {
-    console.error("Error connecting: " + error.stack);
+    console.error("Error in /courts/court/:id/reserve route: " + error.stack);
     res.status(500).json({
       msg: "Nous rencontrons des difficultés, merci de réessayer plus tard.",
     });

@@ -1,19 +1,22 @@
 extends layout
 
 block content
+  h1= _links.create.title
   p= message
 
-    form(action="/login", method="post")
+  form(action="/login", method="post")
     label(for="username") Nom d'utilisateur:
     input(type="text", name="username")
     button(type="submit") Se connecter
 
   // Traitement des liens HAL
   if (_links)
-    if (_links.create && _links.create.href)
-      a(href=_links.create.href, title=_links.create.title, target=_links.create.target)
-      a(href=_links.next.href, title=_links.next.title)
+    
+    if (_links.previous)
+      a(href=_links.previous.href, title=_links.previous.title)= _links.previous.description
+    br
+    if (_links.next)
+      a(href=_links.next.href, title=_links.next.title)= _links.next.description
 
   if (error)
     p.error= error
-

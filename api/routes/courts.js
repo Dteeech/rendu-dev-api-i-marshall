@@ -29,6 +29,7 @@ router.get("/", async function (req, res, next) {
     res.render("courts", {
       title: "RESTful web api",
       courts: courts,
+      message: req.session.username,
     });
     console.log("Fin de la route /courts avec succès");
   } catch (error) {

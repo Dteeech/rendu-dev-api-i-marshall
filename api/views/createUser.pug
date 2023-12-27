@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  h1= title
-  h2 Création de compte de réservation
+  h1= _links.create.title
+  h2= _links.create.description
   p= message
 
   form(action="/create-user", method="post")
@@ -12,8 +12,8 @@ block content
 
   // Traitement des liens HAL
   if (_links)
-    if (_links.create && _links.create.href)
-      a(href=_links.create.href, title=_links.create.title, target=_links.create.target) Créer un nouvel utilisateur
+    if (_links.next && _links.next.href)
+      a(href=_links.next.href, title=_links.next.title) Se connecter
 
   if (error)
     p.error= error

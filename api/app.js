@@ -9,8 +9,11 @@ const swaggerFile = require("./swagger_output.json");
 var indexRouter = require("./routes/index");
 var courtsRouter = require("./routes/courts");
 var loginRouter = require("./routes/login");
+var logOutRouter = require("./routes/logout");
 var createUserRouter = require("./routes/user");
 var courtRouter = require("./routes/court");
+
+const checkAuthentication = require("./tools/checkAuthentification");
 
 const session = require("express-session");
 const crypto = require("crypto");
@@ -29,27 +32,31 @@ app.use(express.static(path.join(__dirname, "public")));
 
 /**
  * configuration de la session
- * génère une secret key
+ * génère une secret key avec crypto
  *
  */
 const secretKey = crypto.randomBytes(32).toString("hex");
 app.use(
   session({
-    secret: secretKey, //clée secrete de la session
+    secret: secretKey, // clé secrète de la session
     resave: true,
     saveUninitialized: true,
+    cookie: {
+      maxAge: 3600000,
+    },
   })
 );
 
 /**
  * Enregistrement des routes
  */
-app.use("/", courtsRouter);
 app.use("/login", loginRouter);
-app.use("/create-user", createUserRouter);
+app.use("/logout", logOutRouter);
+app.use("/register", createUserRouter);
 app.use("/courts", courtsRouter);
-app.use("/courts/court", courtRouter);
+app.use("/courts/court", checkAuthentication, courtRouter);
 
+app.use("/", indexRouter); // Mettez cette ligne à la fin pour les routes non spécifiées
 /**
  * Configuration Swagger, exposition de la doc sur la route /doc
  */

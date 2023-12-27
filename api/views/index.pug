@@ -2,8 +2,9 @@ extends layout
 
 block content
   h1= title
-  p Welcome to the #{title}
-  h2 Liste des utilisateur·ices de l'application
+  p Bienvenue sur l'#{title}
+  h2 Liste des ressources de l'application
   ul
-    each user in users
-      li= user.firstName
+    each link in links
+      li
+        a(href=link.href)= link.title

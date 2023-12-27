@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+  h2= message
+  p Formulaire de réservation pour le terrain #{courtId}
+
+  form(action=`/courts/court/${courtId}/reserve-form`, method="post")
+    label(for="reservationDate") Date de réservation :
+    input(type="date", name="reservationDate", required)
+
+    label(for="reservationTime") Heure de réservation :
+    input(type="time", name="reservationTime", required)
+
+    button(type="submit") Réserver

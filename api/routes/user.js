@@ -1,32 +1,31 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
-const { halLinkObject } = require("../hal");
 
 // Page de création de compte (formulaire)
 router.get("/", async function (req, res, next) {
-  // utilisation de la fonction halLinkObject pour générer des liens hal
-  const selfLink = halLinkObject("/create-user");
-  const profileLink = halLinkObject("/profile/user");
-  const createLink = halLinkObject(
-    "/create-user",
-    "POST",
-    "créer un nouvel utilisateur",
-    false,
-    "permet de créer un nouvel utilisateur"
-  );
-
   const halRepresentation = {
     _links: {
-      self: selfLink,
-      profile: profileLink,
-      create: createLink,
+      self: { href: "/register" },
+      previous: { href: "/", title: "home" },
+      next: {
+        href: "/login",
+        title: "login",
+      },
+      profile: { href: "/profile/user" },
+      create: {
+        href: "/register",
+        method: "POST",
+        title: "Créer un nouvel utilisateur",
+        templated: false,
+        description: "Permet de créer un nouvel utilisateur",
+      },
     },
     message: "Bonjour, veuillez créer votre compte pour pouvoir réserver !",
   };
 
   res.render("createUser", {
-    title: "Titre de votre page",
+    title: "Créer un compte",
     _links: halRepresentation._links,
     message: halRepresentation.message,
   });
