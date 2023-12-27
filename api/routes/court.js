@@ -25,7 +25,7 @@ router.get("/:id", async function (req, res, next) {
           next: { href: `/courts/court/${courtId}/reserve-form` },
         },
         Name: courtDetails.Name,
-        Status: courtDetails.Status === 1 ? "disponible" : "non disponible",
+        Status: courtDetails.Status === 1 ? "disponible" : "réservé",
         UnavailableDays: courtDetails.UnavailableDays,
         reserve: {
           href: `/courts/court/${courtId}/reserve`,
@@ -102,7 +102,7 @@ router.post("/:id/reserve-form", async function (req, res, next) {
 
   try {
     // Vérifier si la plage horaire spécifique est disponible
-    const [availabilityRows] = await conn.execute(
+    const [rows] = await conn.execute(
       "SELECT * FROM Reservation WHERE Court_ID = ? AND Date = ? AND Time = ?",
       [courtId, date, time]
     );
@@ -112,15 +112,19 @@ router.post("/:id/reserve-form", async function (req, res, next) {
     const openingHour = 10;
     const closingHour = 22;
     const reservationHour = reservationDateTime.getHours();
-
-    if (reservationHour < openingHour || reservationHour > closingHour) {
+    const reservationDay = reservationDateTime.getDay(); // 0 = dimanche, etc
+    if (
+      reservationDay === 0 ||
+      reservationHour < openingHour ||
+      reservationHour > closingHour
+    ) {
       res.status(400).json({
         msg: "Les réservations ne sont autorisées qu'entre 10h et 22h.",
       });
       return;
     }
 
-    if (availabilityRows.length === 0) {
+    if (rows.length === 0) {
       // La plage horaire est disponible, effectuer la réservation
       await conn.execute(
         "INSERT INTO Reservation (User_ID, Court_ID, Date, Time, Duration) VALUES (?, ?, ?, ?, ?)",

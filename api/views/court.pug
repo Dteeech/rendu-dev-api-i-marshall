@@ -2,14 +2,12 @@ extends layout
 
 block content
   h1= title
-  p horaires de la salle :
-  p du lundi au samedi de 10h à 22h
-
+  p Horaires de la salle :
+  p Du lundi au samedi de 10h à 22h
 
   if message
     p Connecté en tant que #{message}
 
-  
   if court.Status === "disponible"
     p Détails du terrain :
     ul
@@ -18,7 +16,7 @@ block content
       li= `Indisponibilité: ${court.UnavailableDays}`
    
     a(href=court._links.next.href) Réserver
-  else 
-  h2 terrain déjà réservé
-
-
+  else if court.Status === "réservé"
+    h2 Terrain déjà réservé
+  else
+    h2 Statut du terrain inconnu
