@@ -22,7 +22,7 @@
 
 > N'oubliez pas de supprimer le dossier `.git` si vous désirez créer votre propre dépôt à partir des sources
 
-```bash
+
 rm -R .git
 git init `
 
@@ -109,4 +109,3 @@ Références
 -   [Express.js Documentation](https://expressjs.com/)
 -   MySQL Documentation
 -   [RESTful API Design - Best Practices](https://restfulapi.net/)
-```
