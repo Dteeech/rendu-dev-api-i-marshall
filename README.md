@@ -135,6 +135,9 @@ D'accord, voici le dictionnaire des données pour toutes les ressources :
 Ce tableau présente les détails de chaque ressource, y compris l'URL, les méthodes HTTP supportées, les paramètres d'URL ou variations possibles, et des commentaires supplémentaires pour chaque ressource. N'hésitez pas à ajuster ces informations selon les besoins spécifiques de votre projet.
 ### Modèle Conceptuel des Données (MCD)
 
+<img width="451" alt="SCR-20231230-mjep" src="https://github.com/Dteeech/rendu-dev-api-i-marshall/assets/100597736/49a78820-333c-4bf1-a30f-e08e497af472">
+
+
 Remarques
 ---------
 
