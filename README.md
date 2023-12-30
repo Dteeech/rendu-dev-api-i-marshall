@@ -138,6 +138,10 @@ Ce tableau présente les détails de chaque ressource, y compris l'URL, les mét
 ## Remarques
 
 - Il peut y avoir une erreur au lancement du container du projet dans les logs. Il suffit en général de sauvegarder un fichier.js pour que cela fonctionne.
+- Je n'ai pas su comment pouvoir rendre un terrain au choix indisponible de manière temporaire.
+  Un terrain indisponible ne peut accueillir de nouvelles réservations.
+- Je pense j'aurai dû changer la structure de la base de données.
+- Je pense qu'avoir créé des views m'a fait perdre du temps que j'aurai pû utilisé pour mieux structurer mes réponses json hal et mes requêtes.
 
 ## Références
 
