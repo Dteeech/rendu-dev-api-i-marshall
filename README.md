@@ -52,8 +52,6 @@ bashCopy code
 - Se rendre à l'URL [localhost:5001](http://localhost:5001/)
 - Tester avec [curl](https://curl.se/)
 
-bashCopy code
-
 `# Web humain (HTML)
 curl --include localhost:5001
 
@@ -65,13 +63,9 @@ curl localhost:5001`
 
 - Utiliser le client MySQL depuis la machine hôte
 
-bashCopy code
-
 `mysql -uroot -proot -Dmydb -h127.0.0.1 -P5002`
 
 - Exécuter un script SQL en _Batch mode_
-
-bashCopy code
 
 `mysql -uroot -p -Dmydb -h127.0.0.1 -P5002 < script.sql`
 
