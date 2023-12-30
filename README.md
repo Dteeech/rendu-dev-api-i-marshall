@@ -26,13 +26,9 @@ git init `
 
 1.  Dupliquer le fichier `.env.dist` et le renommer en `.env`
 
-bashCopy code
-
 `cp .env.dist .env`
 
 1.  Installer les dépendances de l'application node.js et générer la documentation Swagger
-
-bashCopy code
 
 `pushd api
 npm install
@@ -40,8 +36,6 @@ npm run swagger-autogen
 popd`
 
 1.  Démarrer le projet avec Docker Compose
-
-bashCopy code
 
 `docker-compose up -d`
 
