@@ -8,7 +8,6 @@
 
 3. [Remarques](#remarques)
 4. [Références](#références)
-5. [Code Source](#code-source)
 
 ## Lancer le Projet
 
@@ -138,7 +137,7 @@ Ce tableau présente les détails de chaque ressource, y compris l'URL, les mét
 
 ## Remarques
 
-Ajoutez ici toute remarque ou difficulté rencontrée lors du développement.
+- Il peut y avoir une erreur au lancement du container du projet dans les logs. Il suffit en général de sauvegarder un fichier.js pour que cela fonctionne.
 
 ## Références
 
