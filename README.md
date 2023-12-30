@@ -91,11 +91,48 @@ Conception
 
 ### Dictionnaire des Données
 
+\
+D'accord, voici le dictionnaire des données pour toutes les ressources :
+
+### Dictionnaire des Données
+
+#### Ressource : Réservation
+
 | Ressource | URL | Méthodes HTTP | Paramètres d'URL/Variations | Commentaires |
 | --- | --- | --- | --- | --- |
-| Réservation | /reservations | GET, POST | - | Liste de toutes les réservations ou ajout d'une nouvelle réservation |
-| Détails de Réservation | /reservations/:id | GET, PUT, DELETE | :id (ID de la réservation) | Obtient, met à jour ou supprime une réservation spécifique |
+| Réservation | `/reservations` | `GET`, `POST` | Aucun | Liste de toutes les réservations ou ajout d'une nouvelle réservation |
 
+#### Ressource : Détails de Réservation
+
+| Ressource | URL | Méthodes HTTP | Paramètres d'URL/Variations | Commentaires |
+| --- | --- | --- | --- | --- |
+| Détails de Réservation | `/reservations/:id` | `GET`, `PUT`, `DELETE` | `:id` (ID de la réservation) | Obtient, met à jour ou supprime une réservation spécifique |
+
+#### Ressource : Court
+
+| Ressource | URL | Méthodes HTTP | Paramètres d'URL/Variations | Commentaires |
+| --- | --- | --- | --- | --- |
+| Court | `/courts` | `GET`, `POST` | Aucun | Liste de tous les courts ou ajout d'un nouveau court |
+
+#### Ressource : Détails du Court
+
+| Ressource | URL | Méthodes HTTP | Paramètres d'URL/Variations | Commentaires |
+| --- | --- | --- | --- | --- |
+| Détails du Court | `/courts/:id` | `GET`, `PUT`, `DELETE` | `:id` (ID du court) | Obtient, met à jour ou supprime un court spécifique |
+
+#### Ressource : Utilisateur
+
+| Ressource | URL | Méthodes HTTP | Paramètres d'URL/Variations | Commentaires |
+| --- | --- | --- | --- | --- |
+| Utilisateur | `/users` | `GET`, `POST` | Aucun | Liste de tous les utilisateurs ou ajout d'un nouvel utilisateur |
+
+#### Ressource : Détails de l'Utilisateur
+
+| Ressource | URL | Méthodes HTTP | Paramètres d'URL/Variations | Commentaires |
+| --- | --- | --- | --- | --- |
+| Détails de l'Utilisateur | `/users/:id` | `GET`, `PUT`, `DELETE` | `:id` (ID de l'utilisateur) | Obtient, met à jour ou supprime un utilisateur spécifique |
+
+Ce tableau présente les détails de chaque ressource, y compris l'URL, les méthodes HTTP supportées, les paramètres d'URL ou variations possibles, et des commentaires supplémentaires pour chaque ressource. N'hésitez pas à ajuster ces informations selon les besoins spécifiques de votre projet.
 ### Modèle Conceptuel des Données (MCD)
 
 Remarques
