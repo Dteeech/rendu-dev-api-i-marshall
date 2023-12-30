@@ -4,7 +4,6 @@ block content
   h1= title
   p= message
 
-  
   ul
     each reservation in reservations
       li
@@ -13,7 +12,6 @@ block content
           a(href=`/reservations/${reservation.ID}/edit`) Modifier
           a(href=`#`, onclick=`deleteReservation(${reservation.ID})`) Supprimer
 
-  
   script.
     function deleteReservation(reservationId) {
       if (confirm('Voulez-vous vraiment supprimer cette réservation?')) {
