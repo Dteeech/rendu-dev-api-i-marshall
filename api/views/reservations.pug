@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  h1= title
+  p= message
+
+  
+  ul
+    each reservation in reservations
+      li
+        a(href=`/reservations/${reservation.ID}`)= `Reservation ${reservation.ID}`
+        span
+          a(href=`/reservations/${reservation.ID}/edit`) Modifier
+          a(href=`#`, onclick=`deleteReservation(${reservation.ID})`) Supprimer
+
+  
+  script.
+    function deleteReservation(reservationId) {
+      if (confirm('Voulez-vous vraiment supprimer cette réservation?')) {
+        // Appel AJAX pour supprimer la réservation
+        fetch(`/reservations/${reservationId}`, { method: 'DELETE' })
+          .then(response => response.json())
+          .then(data => {
+            alert(data.msg); // Afficher le message de la réponse du serveur
+            location.reload(); // Actualiser la page après suppression
+          })
+          .catch(error => console.error('Erreur lors de la suppression de la réservation:', error));
+      }
+    }

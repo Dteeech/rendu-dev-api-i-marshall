@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  h1= title
+  p= message
+
+  h2= `Détails de la réservation ${reservation.ID}`
+  p= `User ID: ${reservation.User_ID}`
+  p= `Court ID: ${reservation.Terrain_ID}`
+  p= `Date/Time: ${reservation.DateTimeStart}`
+  p= `Duration: ${reservation.Duration}`
+
+  
+  a(href=`/reservations/${reservation.ID}/edit`) Modifier
+
+  
+  a(href=`#`, onclick=`deleteReservation(${reservation.ID})`) Supprimer
+
+  
+  script.
+    function deleteReservation(reservationId) {
+      if (confirm('Voulez-vous vraiment supprimer cette réservation?')) {
+        // Appel AJAX pour supprimer la réservation
+        fetch(`/reservations/${reservationId}`, { method: 'DELETE' })
+          .then(response => response.json())
+          .then(data => {
+            alert(data.msg); // Afficher le message de la réponse du serveur
+            window.location.href = '/reservations'; // Rediriger vers la liste des réservations
+          })
+          .catch(error => console.error('Erreur lors de la suppression de la réservation:', error));
+      }
+    }

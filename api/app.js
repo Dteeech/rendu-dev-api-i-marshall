@@ -12,6 +12,7 @@ var loginRouter = require("./routes/login");
 var logOutRouter = require("./routes/logout");
 var createUserRouter = require("./routes/user");
 var courtRouter = require("./routes/court");
+var ReservationRouter = require("./routes/reservation");
 
 const checkAuthentication = require("./tools/checkAuthentification");
 
@@ -55,6 +56,7 @@ app.use("/logout", logOutRouter);
 app.use("/register", createUserRouter);
 app.use("/courts", courtsRouter);
 app.use("/courts/court", checkAuthentication, courtRouter);
+app.use("/reservations", ReservationRouter);
 
 app.use("/", indexRouter); // Mettez cette ligne à la fin pour les routes non spécifiées
 /**
