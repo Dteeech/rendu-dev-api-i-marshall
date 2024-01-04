@@ -28,14 +28,14 @@ git init `
 
 `cp .env.dist .env`
 
-1.  Installer les dépendances de l'application node.js et générer la documentation Swagger
+2.  Installer les dépendances de l'application node.js et générer la documentation Swagger
 
 `pushd api
 npm install
 npm run swagger-autogen
 popd`
 
-1.  Démarrer le projet avec Docker Compose
+3.  Démarrer le projet avec Docker Compose
 
 `docker-compose up -d`
 
